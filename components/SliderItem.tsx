@@ -72,14 +72,14 @@ const styles = StyleSheet.create({
         width: width
     },
     image: { 
-        width: 300, 
-        height: 500, 
+        width: '70%', 
+        height: 600, 
         borderRadius: 20
     },
     background: {
         position: 'absolute',
-        height: 500,
-        width: 300,
+        height: 600,
+        width: '70%',
         padding: 20,
         borderRadius: 20,
         justifyContent: 'space-between'

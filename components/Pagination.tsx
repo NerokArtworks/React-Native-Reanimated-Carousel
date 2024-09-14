@@ -1,6 +1,6 @@
 import { ImageSliderType } from "@/data/FeedData";
-import { StyleSheet } from "react-native";
-import { SharedValue } from "react-native-reanimated";
+import { Dimensions, StyleSheet } from "react-native";
+import Animated, { Extrapolation, interpolate, SharedValue, useAnimatedStyle } from "react-native-reanimated";
 import { Text, View } from "./Themed";
 
 type Props = {
@@ -8,6 +8,8 @@ type Props = {
     paginationIndex: number;
     scrollX: SharedValue<number>
 }
+
+const { width } = Dimensions.get('screen');
 
 const Pagination = ({
     items,
@@ -17,8 +19,28 @@ const Pagination = ({
     return (
         <View style={styles.container}>
             {items.map((_,index) => {
+                const pgAnimationStyle = useAnimatedStyle(() => {
+                    const dotWidth = interpolate(
+                        scrollX.value,
+                        [(index - 1) * width, index * width, (index + 1) * width],
+                        [8, 20, 8],
+                        Extrapolation.CLAMP
+                    );
+
+                    return {
+                        width: dotWidth,
+                    }
+                });
+                
                 return (
-                    <View key={index} style={[styles.dot, {backgroundColor: paginationIndex === index ? '#222': '#aaa'}]} />
+                    <Animated.View 
+                        key={index} 
+                        style={[
+                            styles.dot, 
+                            pgAnimationStyle,
+                            {backgroundColor: paginationIndex === index ? '#222': '#aaa'}
+                        ]}
+                    />
                 )
             })}
         </View>
